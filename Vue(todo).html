@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+
+    <div class="container">
+        <div id="app">
+            <label class="input-group">
+                <input class="input-group col-2 offset-1" v-model="newTodoText" placeholder="Введите задание..." />
+                <button class="btn btn-primary col-2" v-on:click="addNewTodo">Добавить задание</button>
+            </label>
+            <ul>
+                <todo-item v-for="(todo, index) in todos" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)"></todo-item>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('todo-item', {
+            template: '<li style="margin:5px"> {{title}} <button class="btn btn-danger" style="margin-left:15px" v-on:click="$emit(\'remove\')"> Удалить </button>  </li>',
+            props: ['title']
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                newTodoText: '',
+                todos: [
+                    { title: 'Задание 1' },
+                    { title: 'Задание 2' },
+                    { title: 'Задание 3' }
+                ]
+            },
+            methods: {
+                addNewTodo: function (e) {
+                    if (this.newTodoText == '') {
+                        e.preventDefault();
+                        alert('Введите задание');
+                    }
+                    else {
+                        this.todos.push({
+                            title: this.newTodoText
+                        })
+                    }
+                    this.newTodoText = ''
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
